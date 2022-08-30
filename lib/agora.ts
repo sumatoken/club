@@ -1,4 +1,11 @@
-export let rtc = {
+import { IAgoraRTCClient } from "agora-rtc-sdk-ng";
+
+interface RTC {
+    localAudioTrack: any;
+    client: IAgoraRTCClient | null
+}
+
+export let rtc: RTC = {
     localAudioTrack: null,
     client: null
 };
