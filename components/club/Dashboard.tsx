@@ -1,6 +1,9 @@
-import AgoraRTC, { IAgoraRTCClient } from "agora-rtc-sdk-ng";
+import AgoraRTC, {
+  IAgoraRTCClient,
+  IAgoraRTCRemoteUser,
+} from "agora-rtc-sdk-ng";
 import React, { useEffect, useState } from "react";
-import { options, rtc } from "../../lib/agora";
+import { options, rtc, useClient, useMicrophoneTrack } from "../../lib/agora";
 
 const useAgora = () => {
   rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
@@ -19,8 +22,8 @@ const useAgora = () => {
 };
 
 export default function Dashboard() {
-  const { rtc } = useAgora();
-
+  // const { rtc } = useAgora();
+  /* 
   const joinChannel = async () => {
     await rtc.client?.join(
       options.appId,
@@ -36,13 +39,77 @@ export default function Dashboard() {
     rtc.localAudioTrack?.close();
     await rtc.client?.leave();
     console.log("left!");
-  };
+  }; */
+
+  const [inCall, setInCall] = useState(false);
+  const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
+
+  const [start, setStart] = useState(false);
+  const client = useClient();
+  const { ready, track, error } = useMicrophoneTrack();
+
+  useEffect(() => {
+    let init = async (name: string) => {
+      client.on("user-published", async (user, mediaType) => {
+        await client.subscribe(user, mediaType);
+        if (mediaType === "audio" && user.hasAudio) {
+          setUsers((prev) => {
+            return [...prev, user];
+          });
+          user.audioTrack?.play();
+        }
+      });
+
+      client.on("user-unpublished", (user, mediaType) => {
+        if (mediaType === "audio" && user.audioTrack) {
+          user.audioTrack.stop();
+          setUsers((prev) => {
+            return prev.filter((user) => user.uid !== user.uid);
+          });
+        }
+      });
+
+      client.on("user-left", (user) => {
+        setUsers((prev) => {
+          return prev.filter((user) => user.uid !== user.uid);
+        });
+      });
+
+      client.on("user-joined", (user) => {
+        console.log("new user joined!");
+        setUsers((prev) => {
+          return [...prev, user];
+        });
+      });
+
+      try {
+        await client.join(options.appId, name, options.token, null);
+        console.log("joined!");
+      } catch (error) {
+        console.log("error", error);
+      }
+
+      if (track) await client.publish([track]);
+      setStart(true);
+    };
+
+    if (ready && track) {
+      try {
+        init("first");
+        console.log("users", users);
+      } catch (error) {
+        console.log("error2", error);
+      }
+    }
+  }, [client, ready, track]);
 
   return (
     <div>
-      <button onClick={() => joinChannel()}>Join</button>
-
-      <button onClick={() => leaveChannel()}>Leave</button>
+      {!inCall ? (
+        <button onClick={() => console.log("join!")}>Join</button>
+      ) : (
+        <button onClick={() => console.log("Leave!")}>Leave</button>
+      )}
     </div>
   );
 }

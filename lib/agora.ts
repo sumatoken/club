@@ -1,4 +1,10 @@
-import { IAgoraRTCClient, IMicrophoneAudioTrack } from "agora-rtc-sdk-ng";
+import {
+  ClientConfig,
+  IAgoraRTCClient,
+  IMicrophoneAudioTrack,
+} from "agora-rtc-sdk-ng";
+
+import { createClient, createMicrophoneAudioTrack } from "agora-rtc-react";
 
 interface RTC {
   localAudioTrack: IMicrophoneAudioTrack | null;
@@ -18,13 +24,18 @@ export let rtc: RTC = {
 };
 
 export let options: optionsType = {
-  // Pass your App ID here.
   appId: process.env.AGORA_APP_ID!,
-  // Set the channel name.
   channel: "first",
-  // Pass your temp token here.
   token:
-    "007eJxTYBBNd9NKSpvCEzX/B0fghTLBqp0pEy02daUcbonwOZ9ufE+BwdLYyCTV0iItJdXE0iQtxTLJxNA0zczIwCg1MSkt1cDQ+iVv8m4r/uRSPXYmRgYIBPFZGdIyi4pLGBgA27seog==",
-  // Set the user ID.
+    "007eJxTYPiRqMjZ8spy/rkDhwSvfVohxeGfesoxzOjUt5/6YstPb+BQYLA0NjJJtbRIS0k1sTRJS7FMMjE0TTMzMjBKTUxKSzUw/GjCn1zYJpDM/Ow4EyMDBIL4rAxpmUXFJQwMALYnIbU=",
   uid: 123456,
 };
+
+export const config: ClientConfig = {
+  mode: "rtc",
+  codec: "vp8",
+};
+
+export const useClient = createClient(config);
+
+export const useMicrophoneTrack = createMicrophoneAudioTrack();
