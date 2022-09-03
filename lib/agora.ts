@@ -27,7 +27,7 @@ export let options: optionsType = {
   appId: process.env.AGORA_APP_ID!,
   channel: "first",
   token:
-    "007eJxTYPiRqMjZ8spy/rkDhwSvfVohxeGfesoxzOjUt5/6YstPb+BQYLA0NjJJtbRIS0k1sTRJS7FMMjE0TTMzMjBKTUxKSzUw/GjCn1zYJpDM/Ow4EyMDBIL4rAxpmUXFJQwMALYnIbU=",
+    "007eJxTYDC/Uxm++/7eOVaWX2bff5DaOFfSfm13qPksqffKT6ax7vqmwGBpbGSSammRlpJqYmmSlmKZZGJommZmZGCUmpiUlmpgmOQjnPxorkjy5uZoRkYGCATxWRnSMouKSxgYABGmIzo=",
   uid: 123456,
 };
 
