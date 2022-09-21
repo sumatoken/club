@@ -17,7 +17,7 @@ export default function Call({ creator, channelName }: callConfiguration) {
   const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>(remoteUsers);
 
   useEffect(() => {
-    let initRTCStream = async (name: string) => {
+    let initRTCStream = async () => {
       client.on("user-published", async (user, mediaType) => {
         await client.subscribe(user, mediaType);
         if (mediaType === "audio" && user.hasAudio) {
@@ -52,12 +52,12 @@ export default function Call({ creator, channelName }: callConfiguration) {
     };
 
     try {
-      initRTCStream("first");
+      initRTCStream();
       console.log("users!", remoteUsers);
     } catch (error) {
       console.log("error2", error);
     }
-  }, [client]);
+  }, [client, users, remoteUsers]);
 
   return (
     <div>

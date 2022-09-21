@@ -27,7 +27,7 @@ export let options: optionsType = {
   appId: process.env.AGORA_APP_ID!,
   channel: "first",
   token:
-    "007eJxTYDC/Uxm++/7eOVaWX2bff5DaOFfSfm13qPksqffKT6ax7vqmwGBpbGSSammRlpJqYmmSlmKZZGJommZmZGCUmpiUlmpgmOQjnPxorkjy5uZoRkYGCATxWRnSMouKSxgYABGmIzo=",
+    "007eJxTYPh3QGfN7zmCVT+bVl21nMmusPbU2kmv/my3W5v6T7g02MJZgcHS2Mgk1dIiLSXVxNIkLcUyycTQNM3MyMAoNTEpLdXA0JhbLHlTjHhy8atIFkYGCATxWRnSMouKSxgYACulIpA=",
   uid: 123456,
 };
 
@@ -39,3 +39,5 @@ export const config: ClientConfig = {
 export const useClient = createClient(config);
 
 export const useMicrophoneTrack = createMicrophoneAudioTrack();
+
+export type MicrophoneAudioTrack = IMicrophoneAudioTrack;
