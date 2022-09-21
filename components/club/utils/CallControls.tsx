@@ -7,8 +7,9 @@ import {
   useMicrophoneTrack,
 } from "../../../lib/agora";
 
-interface JoinCallConfiguration {
+interface CallControlProps {
   channelName: string;
+  channelToken: string;
   inCall: boolean;
   setInCall: (arg0: boolean) => void;
 }
@@ -21,9 +22,10 @@ interface ReadyToCall {
 
 export const CallControls = ({
   channelName,
+  channelToken,
   inCall,
   setInCall,
-}: JoinCallConfiguration) => {
+}: CallControlProps) => {
   const [readyToCall, setReadyToCall] = useState(false);
   const { ready, track, error } = useMicrophoneTrack();
   const client = useClient();
