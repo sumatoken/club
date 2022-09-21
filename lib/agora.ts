@@ -13,6 +13,7 @@ interface RTC {
 
 interface optionsType {
   appId: string;
+  appCertificate: string;
   channel: string;
   token: string;
   uid: number;
@@ -23,8 +24,9 @@ export let rtc: RTC = {
   client: null,
 };
 
-export let options: optionsType = {
+export const options: optionsType = {
   appId: process.env.AGORA_APP_ID!,
+  appCertificate: process.env.AGORA_APP_CERTEFICATE!,
   channel: "first",
   token:
     "007eJxTYPh3QGfN7zmCVT+bVl21nMmusPbU2kmv/my3W5v6T7g02MJZgcHS2Mgk1dIiLSXVxNIkLcUyycTQNM3MyMAoNTEpLdXA0JhbLHlTjHhy8atIFkYGCATxWRnSMouKSxgYACulIpA=",

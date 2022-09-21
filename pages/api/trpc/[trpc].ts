@@ -1,17 +1,26 @@
 import * as trpc from "@trpc/server";
 import * as trpcNext from "@trpc/server/adapters/next";
 import { z } from "zod";
-
-export const appRouter = trpc.router().query("createChannel", {
-  input: z
-    .object({
-      channelName: z.string().nullish(),
-    })
-    .nullish(),
-  resolve({ input }) {
-    return {
-      greeting: `hello ${input?.channelName ?? "world"}`,
-    };
+import { generateChannelToken } from "../../../utils/generateChannelToken";
+import { prisma } from "../../../lib/prisma";
+export const appRouter = trpc.router().mutation("createChannelToken", {
+  input: z.object({
+    channelName: z.string(),
+  }),
+  async resolve({ input }) {
+    const token = await generateChannelToken(input);
+    console.log(token);
+    const channel = await prisma.channel.create({
+      data: {
+        name: input.channelName,
+        token,
+      },
+    });
+    console.log(token);
+    if (channel) {
+      return { channel };
+    }
+    return { status: "error" };
   },
 });
 
